@@ -1,18 +1,31 @@
 <template>
   <div>
     <button @click="fetchData">Show all Persons</button>
+    <input
+      type="text"
+      placeholder="Filter by first fisrt name"
+      v-model="filter.filterByName"
+    />
+    <input
+      type="text"
+      placeholder="Filter by last last name"
+      v-model="filter.filterByLastName"
+    />
+    <input
+      type="text"
+      placeholder="Filter by email"
+      v-model="filter.filterByEmail"
+    />
+
     <table style="width: 100%">
       <tr>
         <th>ID</th>
-        <th>
-          FirstName
-          <button @click="handleFilter">Filter</button>
-        </th>
+        <th>FirstName</th>
 
         <th>LastName</th>
         <th>Email Adress</th>
       </tr>
-      <tr v-for="item in usersData" :key="item.id">
+      <tr v-for="item in filteredRows" :key="item.id">
         <td>{{ item.id }}</td>
         <td v-if="toggleEditButton || toggleFilterInput">{{ item.fname }}</td>
         <td v-if="!toggleEditButton && testId === item.id">
@@ -45,6 +58,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      filter: { filterByName: '', filterByLastName: '', filterByEmail: '' },
       toggleEditButton: true,
       toggleFilterInput: false,
       testId: '',
@@ -68,16 +82,13 @@ export default {
       axios
         .get('https://tcc-tech-test-default-rtdb.firebaseio.com/persons.json')
         .then((res) => {
-          console.log(res);
           const data = res.data;
-          console.log(data);
           const users = [];
           for (let key in data) {
             const user = data[key];
             user.id = key;
             users.push(user);
           }
-          console.log(users);
           this.usersData = users;
         })
         .catch((err) => console.log(err));
@@ -120,6 +131,28 @@ export default {
     },
     handleFilter() {
       this.toggleFilterInput = !this.toggleFilterInput;
+    },
+  },
+  computed: {
+    filteredRows() {
+      return this.usersData.filter((row) => {
+        const fname = row.fname.toString().toLowerCase();
+        const lname = row.lname.toString().toLowerCase();
+        const email = row.email.toString().toLowerCase();
+
+        const searchByName = this.filter.filterByName.toString().toLowerCase();
+        const searchByLastName = this.filter.filterByLastName
+          .toString()
+          .toLowerCase();
+        const searchByEmail = this.filter.filterByEmail
+          .toString()
+          .toLowerCase();
+        return (
+          fname.includes(searchByName) &&
+          lname.includes(searchByLastName) &&
+          email.includes(searchByEmail)
+        );
+      });
     },
   },
 };
