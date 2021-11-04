@@ -1,4 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+// import Friend from './components/Friend.vue'
+// import AddPerson from './components/AddPerson.vue'
+const app = createApp(App)
 
-createApp(App).mount('#app')
+// app.component('add-person', AddPerson)
+app.mount('#app')
