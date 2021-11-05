@@ -1,53 +1,144 @@
 <template>
-  <div>
-    <button @click="fetchData">Show all Persons</button>
+  <div class="mb-4 mr-0">
+    <!-- <button @click="fetchData">Show all Persons</button> -->
+
+    <label class="text-sm font-sans text-gray-900 block mb-2">
+      Search by Attribute ( FirstName, LastName, Email )
+    </label>
     <input
       type="text"
       placeholder="Filter by first fisrt name"
-      v-model="filter.filterByName"
+      v-model="filter"
+      class="
+        bg-gray-50
+        border border-gray-300
+        text-gray-900
+        sm:text-sm
+        rounded-lg
+        focus:ring-blue-500 focus:border-blue-500
+        block
+        w-full
+        p-2.5
+      "
     />
-    <input
+    <!-- <input
       type="text"
       placeholder="Filter by last last name"
-      v-model="filter.filterByLastName"
-    />
-    <input
-      type="text"
-      placeholder="Filter by email"
-      v-model="filter.filterByEmail"
-    />
+      v-model="filterByLastName"
+    /> -->
+    <!-- <input type="text" placeholder="Filter by email" v-model="filterByEmail" /> -->
 
-    <table style="width: 100%">
+    <table class="lg:w-full border font-sans mt-8">
       <tr>
-        <th>ID</th>
-        <th>FirstName</th>
+        <th class="text-center p-3 border border-blue-200 bg-gray-300 sm:w-min">
+          ID
+        </th>
+        <th class="text-center p-3 border border-blue-200 bg-gray-300">
+          FirstName
+        </th>
 
-        <th>LastName</th>
-        <th>Email Adress</th>
+        <th class="text-center p-3 border border-blue-200 bg-gray-300">
+          LastName
+        </th>
+        <th class="text-center p-3 border border-blue-200 bg-gray-300">
+          Email Adress
+        </th>
       </tr>
       <tr v-for="item in filteredRows" :key="item.id">
-        <td>{{ item.id }}</td>
-        <td v-if="toggleEditButton || toggleFilterInput">{{ item.fname }}</td>
-        <td v-if="!toggleEditButton && testId === item.id">
-          <input v-model="editedData.fname" />
+        <td class="border border-blue-200 bg-gray-200 text-center">
+          {{ item.id }}
         </td>
-        <td><input type="text" v-if="toggleFilterInput" /></td>
-        <td v-if="toggleEditButton">{{ item.lname }}</td>
-        <td v-if="!toggleEditButton && testId === item.id">
-          <input v-model="editedData.lname" />
+        <td class="border border-blue-200 bg-gray-200 text-center">
+          <div v-if="toggleEditButton || toggleFilterInput">
+            {{ item.fname }}
+          </div>
+          <div v-if="!toggleEditButton && testId === item.id">
+            <input
+              class="lg:w-full sm:w-16"
+              v-model="editedData.fname"
+              :placeholder="item.fname"
+            />
+          </div>
         </td>
-        <td v-if="toggleEditButton">{{ item.email }}</td>
-        <td v-if="!toggleEditButton && testId === item.id">
-          <input v-model="editedData.email" />
+        <td class="border border-blue-200 bg-gray-200 text-center">
+          <!-- <div><input type="text" v-if="toggleFilterInput" /></div> -->
+          <div v-if="toggleEditButton">{{ item.lname }}</div>
+          <div v-if="!toggleEditButton && testId === item.id">
+            <input
+              class="lg:w-full sm:w-16"
+              v-model="editedData.lname"
+              :placeholder="item.lname"
+            />
+          </div>
         </td>
-
-        <button @click="handleEdit(item.id)" v-if="toggleEditButton">
-          Edit
-        </button>
-        <button @click="handleSaveAfterEdit(item.id)" v-if="!toggleEditButton">
-          Save
-        </button>
-        <button @click="handleDelete(item.id)">Delete</button>
+        <td class="border border-blue-200 bg-gray-200 text-center">
+          <div v-if="toggleEditButton">{{ item.email }}</div>
+          <div v-if="!toggleEditButton && testId === item.id">
+            <input
+              class="lg:w-full sm:w-16"
+              v-model="editedData.email"
+              :placeholder="item.email"
+            />
+          </div>
+        </td>
+        <div class="flex flex-row justify-around">
+          <button
+            @click="handleEdit(item.id)"
+            v-if="toggleEditButton"
+            class="
+              text-white
+              bg-green-900
+              hover:bg-green-600
+              focus:ring-4 focus:ring-blue-300
+              font-medium
+              rounded-lg
+              text-sm
+              px-5
+              py-2.5
+              mt-2
+              mb-3
+            "
+          >
+            Edit
+          </button>
+          <button
+            @click="handleSaveAfterEdit(item.id)"
+            v-if="!toggleEditButton"
+            class="
+              text-white
+              bg-green-900
+              hover:bg-green-600
+              focus:ring-4 focus:ring-blue-300
+              font-medium
+              rounded-lg
+              text-sm
+              px-5
+              py-2.5
+              mt-2
+              mb-3
+            "
+          >
+            Save
+          </button>
+          <button
+            @click="handleDelete(item.id)"
+            class="
+              text-white
+              bg-green-900
+              hover:bg-green-600
+              focus:ring-4 focus:ring-blue-300
+              font-medium
+              rounded-lg
+              text-sm
+              px-5
+              py-2.5
+              mt-2
+              mb-3
+            "
+          >
+            Delete
+          </button>
+        </div>
       </tr>
     </table>
   </div>
@@ -58,7 +149,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      filter: { filterByName: '', filterByLastName: '', filterByEmail: '' },
+      filter: '',
       toggleEditButton: true,
       toggleFilterInput: false,
       testId: '',
@@ -72,7 +163,7 @@ export default {
     };
   },
   created() {
-    this.interval = setInterval(this.fetchData, 500);
+    setInterval(this.fetchData, 500);
   },
   beforeUnmount() {
     clearInterval(this.interval);
@@ -90,6 +181,10 @@ export default {
             users.push(user);
           }
           this.usersData = users;
+          // this.filter.length === 0
+          //   ? (this.usersData = users)
+          //   : (this.usersData = this.usersData.includes(this.filter));
+          // console.log(this.usersData.includes(this.filter));
         })
         .catch((err) => console.log(err));
     },
@@ -135,22 +230,12 @@ export default {
   },
   computed: {
     filteredRows() {
-      return this.usersData.filter((row) => {
-        const fname = row.fname.toString().toLowerCase();
-        const lname = row.lname.toString().toLowerCase();
-        const email = row.email.toString().toLowerCase();
-
-        const searchByName = this.filter.filterByName.toString().toLowerCase();
-        const searchByLastName = this.filter.filterByLastName
-          .toString()
-          .toLowerCase();
-        const searchByEmail = this.filter.filterByEmail
-          .toString()
-          .toLowerCase();
+      const searchedWord = this.filter;
+      return this.usersData.filter(function (el) {
         return (
-          fname.includes(searchByName) &&
-          lname.includes(searchByLastName) &&
-          email.includes(searchByEmail)
+          el.fname.includes(searchedWord) ||
+          el.lname.includes(searchedWord) ||
+          el.email.includes(searchedWord)
         );
       });
     },
