@@ -108,6 +108,7 @@ export default {
   },
   methods: {
     handleSubmit() {
+      //handle Submit is for posting the input data into the database
       console.log(this.fname, this.lname, this.email);
       axios.post(
         'https://tcc-tech-test-default-rtdb.firebaseio.com/persons.json',

@@ -21,13 +21,6 @@
         p-2.5
       "
     />
-    <!-- <input
-      type="text"
-      placeholder="Filter by last last name"
-      v-model="filterByLastName"
-    /> -->
-    <!-- <input type="text" placeholder="Filter by email" v-model="filterByEmail" /> -->
-
     <table class="lg:w-full border font-sans mt-8">
       <tr>
         <th class="text-center p-3 border border-blue-200 bg-gray-300 sm:w-min">
@@ -61,7 +54,6 @@
           </div>
         </td>
         <td class="border border-blue-200 bg-gray-200 text-center">
-          <!-- <div><input type="text" v-if="toggleFilterInput" /></div> -->
           <div v-if="toggleEditButton">{{ item.lname }}</div>
           <div v-if="!toggleEditButton && testId === item.id">
             <input
@@ -170,6 +162,7 @@ export default {
   },
   methods: {
     fetchData() {
+      //fetData is a method to get the Persons details from the database
       axios
         .get('https://tcc-tech-test-default-rtdb.firebaseio.com/persons.json')
         .then((res) => {
@@ -181,18 +174,16 @@ export default {
             users.push(user);
           }
           this.usersData = users;
-          // this.filter.length === 0
-          //   ? (this.usersData = users)
-          //   : (this.usersData = this.usersData.includes(this.filter));
-          // console.log(this.usersData.includes(this.filter));
         })
         .catch((err) => console.log(err));
     },
     handleEdit(id) {
+      //handle edit is a method to toggle the Save/Edit button.
       this.toggleEditButton = !this.toggleEditButton;
       this.testId = id;
     },
     handleSaveAfterEdit(id) {
+      //handleSaveAfterEdit is a method to save data into the database afer updating
       this.toggleEditButton = !this.toggleEditButton;
       axios
         .patch(
@@ -210,6 +201,7 @@ export default {
         });
     },
     handleDelete(id) {
+      //handleEdit is a method to delete rows from database
       console.log(id);
       axios
         .delete(
@@ -225,11 +217,13 @@ export default {
         });
     },
     handleFilter() {
+      //handleFilter is for togggling the input field conditionally when the Edit button is hitted.
       this.toggleFilterInput = !this.toggleFilterInput;
     },
   },
   computed: {
     filteredRows() {
+      //filteredRows return an array of objects when the filter is needed
       const searchedWord = this.filter;
       return this.usersData.filter(function (el) {
         return (

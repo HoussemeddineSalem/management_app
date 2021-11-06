@@ -16,8 +16,9 @@
           Tcc Technical Test Management App
         </p>
       </div>
-
+      <!--Add Person component is a form to be filled in order to add a perrson details into the database-->
       <add-person></add-person>
+      <!--Person Card is a table showing persons details and an input to filter with-->
       <person-card></person-card>
     </section>
     <div class="flex flex-col items-center justify-around bg-green-300 h-24">
