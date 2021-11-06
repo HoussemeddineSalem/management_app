@@ -19,7 +19,7 @@ npm run serve
 
 ## Preview
 
-<img src ='./assets/tccTechTest-HoussemSalem' alt='preview'>
+<img src ='https://github.com/HoussemeddineSalem/management_app/blob/master/src/assets/previewimage.svg' alt='preview'>
 
 ## Testing
 
