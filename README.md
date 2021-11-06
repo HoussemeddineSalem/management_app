@@ -1,24 +1,26 @@
-# client
+# Management_App
 
-## Project setup
-```
+this app is built with VueJS, with Firebase as a backend service.
+it allows to to list all persons by name, show details for a person,add a person edit a person and delete a person from the list ( Filter by any attribute )
+
+## Installation
+
+```bash
+git clone https://github.com/HoussemeddineSalem/management_app.git
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Built with
 
-### Lints and fixes files
-```
-npm run lint
-```
+-vue.js
+-firebase
+-tailwindcss
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Preview
+
+<img src ='./assets/tccTechTest-HoussemSalem' alt='preview'>
+
+## Testing
+
+-jest
